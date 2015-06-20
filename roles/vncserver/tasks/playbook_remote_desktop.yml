@@ -1,0 +1,13 @@
+---
+- name: install xfce4 + vncserver
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present # as long as they are there, it's fine.
+  with_items:
+    - xfce4
+    - xfce4-goodies
+    - tightvncserver
+    - gnome-icon-theme-full # so that we have good icons.
+    - firefox # for web browsing.
+  become: True

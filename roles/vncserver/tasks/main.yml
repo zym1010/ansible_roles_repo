@@ -1,0 +1,3 @@
+---
+- include: playbook_remote_desktop.yml
+- include: playbook_remote_desktop_deploy.yml

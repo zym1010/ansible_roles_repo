@@ -1,0 +1,17 @@
+---
+- name: install misc tools
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present # as long as they are there, it's fine.
+  with_items:
+    - expect # for some ask & reply scripts
+    - tmux
+    - python-apt # for apt-repository module
+  become: True
+
+- name: create one dir for mounting iso
+  file:
+    path: /mnt/{{ misc_iso_mount_dir }}
+    state: directory
+  become: True

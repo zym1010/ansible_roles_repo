@@ -1,0 +1,38 @@
+---
+- name: make sure the .vnc directory exists.
+  file:
+    path: ~/.vnc/
+    state: directory
+- name: copy a usable xstartup file
+  copy:
+    src: xstartup
+    dest: ~/.vnc/xstartup
+    force: yes
+    mode: "u+x" # to be executable.
+- name: setup new vncserver password.
+  script: vnc_password {{ vncserver_password }}
+- name: copy vncserver restart script
+  copy:
+    src: restart_vncserver
+    dest: ~/restart_vncserver
+    force: yes
+    mode: "u+x"
+# - name: restart vncserver
+  # sometimes this script fails, due to some SSH error (rc=98)...
+  # when it's successful (rc=0), there's still message from stderr, and the message is the same as that in rc=98! no idea why...
+  # probably some Ansible/OpenSSH bug. Just run it multiple times to make it work.
+  #script: scripts/restart_vncserver {{ vncserver_display }}
+- name: restart vncserver
+  command: ~/restart_vncserver {{ vncserver_display }}
+- name: wait 10 seconds before fixing tab issue to give some time for generating config file.
+  wait_for:
+    timeout: 10
+- name: fix that tab issue in xfce4.
+  # reference: http://ubuntuforums.org/archive/index.php/t-1771058.html
+  lineinfile:
+    dest: ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+    regexp: "^( *)<property name=\"&lt;Super&gt;Tab\" type=\"string\" value=\"switch_window_key\"/>"
+    line: "\\1<property name=\"&lt;Super&gt;Tab\" type=\"empty\"/>"
+    backrefs: yes
+    backup: no
+

@@ -1,0 +1,12 @@
+---
+- name: setup vr2014 machine.
+  hosts: all
+  roles:
+    - role: vncserver # this could be useful, since I read somewhere that ggplot2 needs x server.
+      vncserver_password: zaq1xsw2
+      vncserver_display: 1
+    - role: developer
+    - role: misc
+    - role: matlab
+      matlab_version: R2014a
+    - role: r_language
