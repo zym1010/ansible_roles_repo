@@ -1,0 +1,39 @@
+---
+- name: check if protobuf is installed (1)
+  stat:
+    path: "{{ protobuf_prefix }}/bin/protoc"
+  register: protobuf_installed
+
+- name: check if protobuf is installed (2)
+  set_fact:
+    protobuf_installed: "{{ protobuf_installed.stat.isreg is defined and protobuf_installed.stat.isreg | bool }}"
+
+- name: copy protobuf tarball
+  copy:
+    src: protobuf-2.6.1.tar.gz
+    dest: /tmp/protobuf-2.6.1.tar.gz
+  when: not  (protobuf_installed | bool)
+
+- name: copy protobuf install script.
+  template:
+    src: install_protobuf.j2
+    dest: /tmp/install_protobuf
+    mode: "a+x"
+  when: not  (protobuf_installed | bool)
+
+- name: run protobuf install script
+  command: "/tmp/install_protobuf"
+  become: True
+  when: not  (protobuf_installed | bool)
+
+- name: remove protobuf tarball
+  file:
+    path: /tmp/protobuf-2.6.1.tar.gz
+    state: absent
+  when: not  (protobuf_installed | bool)
+
+
+
+
+
+

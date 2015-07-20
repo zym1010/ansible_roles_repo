@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+cd /tmp
+# remove previous folders if there is any.
+rm -rf protobuf-2.6.1
+tar -xvf protobuf-2.6.1.tar.gz
+cd protobuf-2.6.1
+./configure --prefix={{ protobuf_prefix }}
+make
+make check
+make install
+cd ..
+rm -rf protobuf-2.6.1
+
