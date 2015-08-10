@@ -1,0 +1,10 @@
+---
+- name: install OpenCV and Python bindings.
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present # as long as they are there, it's fine.
+  with_items:
+    - libopencv-dev
+    - python-opencv
+  become: True
