@@ -1,0 +1,32 @@
+---
+
+- name: install python dev header files and pip.
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present # as long as they are there, it's fine.
+  with_items: # most used packages
+    - python-dev
+    - python-pip
+  become: True
+
+- name: "install numpy scipy and nose of Scipy Stack, which are essential for most Python programs to work"
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present # as long as they are there, it's fine.
+  with_items: # most used packages
+    - python-numpy
+    - python-scipy
+    - python-nose
+  become: True
+
+
+- name: "install ipython for interactive work"
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present # as long as they are there, it's fine.
+  with_items: # most used packages
+    - ipython
+  become: True
