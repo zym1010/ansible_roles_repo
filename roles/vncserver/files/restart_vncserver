@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 vncserver -kill :$1
 sleep 5 # wait some time, since I found the command kill took some time...
 nohup vncserver :$1 # nohup makes sure vncserver command is not killed...
+# don't add anything after this! command like 'sleep 5'
+# will actually make vncserver turn black as this script exits... no idea why.
